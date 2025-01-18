@@ -1,0 +1,10 @@
+How many planets are in the solar system?,8,7,9,6,2
+What is the capital of Madagascar?,Abuja,Nairobi,Antananarivo,Lilongwe,3
+While presenting the first iPhone Steve Jobs prank called what company?,Starbucks,McDonalds,Dunkin,Costa Coffee,1
+Who were the first people in the world to eat popcorn?,Russians,Native Americans,The British,The French,2
+What animal did humans first domesticate?,Cat,Horse,Sheep,Dog,4
+The 13 stripes on the US Flag represent what?,The states,The colonies,The presidents,The UK,2
+What is Sinology the study of?,China,Japan,Taiwan,The Philippines,1
+Of the seven colors of the rainbow which is the middle one?,Red,Purple,Green,Orange,3
+Who was the first American astronaut to enter space?,Neil Armstrong,Laika,Yuri Gagarin,Alan B. Shepard,4
+The Saffir Simpson scale is a scale which classifies the intensities of what?,Hurricanes,Tornadoes,Dust devils,Earthquakes,1
