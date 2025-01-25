@@ -1,4 +1,4 @@
-How many planets are in the solar system?,8,7,9,6,2
+How many planets are in the solar system?,8,7,9,6,1
 What is the capital of Madagascar?,Abuja,Nairobi,Antananarivo,Lilongwe,3
 While presenting the first iPhone Steve Jobs prank called what company?,Starbucks,McDonalds,Dunkin,Costa Coffee,1
 Who were the first people in the world to eat popcorn?,Russians,Native Americans,The British,The French,2

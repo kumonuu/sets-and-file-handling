@@ -1,4 +1,5 @@
 import pgzrun
+import time
 
 TITLE = "Quiz Master"
 WIDTH = 600
@@ -6,6 +7,8 @@ HEIGHT = 500
 
 answer_boxes = []
 welcome_box = Rect(0,0,600,50)
+timer_box = Rect(450,70,125,100)
+countdown = 15
 
 def move_welcome_box():
     welcome_box.left -= 10
@@ -24,6 +27,7 @@ questions = read_questions_from_file()
 
 def get_one_question():
     global questions
+    global question
     
     question = questions.pop(0).split(",")
     
@@ -31,7 +35,7 @@ def get_one_question():
 
 def draw():
     global answer_boxes
-    
+
     x0 = 0 # for even numbered boxes
     y0 = 200
     x1 = 0 # for odd numbered boxes
@@ -44,6 +48,9 @@ def draw():
     question_box = Rect(0,70,430,100)
     screen.draw.filled_rect(question_box, "blue")
     screen.draw.textbox(question[0], question_box)
+
+    screen.draw.filled_rect(timer_box, "blue")
+    screen.draw.textbox(str(countdown), timer_box)
 
     for i in range(4):
         if i % 2 != 0: # odd
@@ -62,6 +69,21 @@ def draw():
 def update():
     move_welcome_box()
 
+def game_over():
+    global question
+    global countdown
+
+    countdown = 0
+    question = ["Game Over","-","-","-","-","0"]
+
+def update_timer():
+    global countdown
+
+    if countdown > 0:
+        countdown -= 1
+    else:
+        game_over()
+
 def on_mouse_down(pos):
     index = 1
     
@@ -70,13 +92,25 @@ def on_mouse_down(pos):
             if index == int(question[5]):
                 print("correct answer")
                 handle_correct_answer()
+            else:
+                # game_over()
+                print("game over")
+
         index += 1
 
 def handle_correct_answer():
     global question
+    global countdown
 
     question = get_one_question()
+    print(question)
+    countdown = 15
+
+
 
 question = get_one_question()
+clock.schedule_interval(update_timer, 1)
+
+print(question)
 
 pgzrun.go()
