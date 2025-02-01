@@ -5,10 +5,27 @@ TITLE = "Quiz Master"
 WIDTH = 600
 HEIGHT = 500
 
-answer_boxes = []
+questions = []
 welcome_box = Rect(0,0,600,50)
 timer_box = Rect(450,70,125,100)
+skip_box = Rect(450,200,125,230)
 countdown = 15
+answer_boxes = []
+
+x0 = 0 # for even numbered boxes
+y0 = 200
+x1 = 0 # for odd numbered boxes
+y1 = 330
+
+for i in range(4):
+    if i % 2 != 0: # odd
+        answer_box = Rect(x1,y1,200,100)
+        answer_boxes.append(answer_box)
+        x1 += 230
+    else: # even
+        answer_box = Rect(x0,y0,200,100)
+        answer_boxes.append(answer_box)
+        x0 += 230
 
 def move_welcome_box():
     welcome_box.left -= 10
@@ -18,7 +35,6 @@ def move_welcome_box():
 def read_questions_from_file():
     file = open("pgzero\quiz\questions.txt", "r")
     questions = file.readlines()
-    
     file.close()
     
     return questions
@@ -29,17 +45,13 @@ def get_one_question():
     global questions
     global question
     
-    question = questions.pop(0).split(",")
+    if len(questions) > 0: # if questions list if not empty
+        question = questions.pop(0).split(",")
     
     return question
 
 def draw():
     global answer_boxes
-
-    x0 = 0 # for even numbered boxes
-    y0 = 200
-    x1 = 0 # for odd numbered boxes
-    y1 = 330
     
     screen.fill(color="black")
     screen.draw.filled_rect(welcome_box, "black")
@@ -52,19 +64,14 @@ def draw():
     screen.draw.filled_rect(timer_box, "blue")
     screen.draw.textbox(str(countdown), timer_box)
 
-    for i in range(4):
-        if i % 2 != 0: # odd
-            answer_box = Rect(x1,y1,200,100)
-            screen.draw.filled_rect(answer_box, "orange")
-            screen.draw.textbox(question[i+1], answer_box)
-            answer_boxes.append(answer_box)
-            x1 += 230
-        else: # even
-            answer_box = Rect(x0,y0,200,100)
-            screen.draw.filled_rect(answer_box, "orange")
-            screen.draw.textbox(question[i+1], answer_box)
-            answer_boxes.append(answer_box)
-            x0 += 230
+    screen.draw.filled_rect(skip_box, "red")
+    screen.draw.textbox("Skip", skip_box, angle=90)
+
+    index = 1
+    for answer_box in answer_boxes:
+        screen.draw.filled_rect(answer_box, "orange")
+        screen.draw.textbox(question[index], answer_box)
+        index += 1
 
 def update():
     move_welcome_box()
@@ -72,7 +79,6 @@ def update():
 def game_over():
     global question
     global countdown
-
     countdown = 0
     question = ["Game Over","-","-","-","-","0"]
 
@@ -83,30 +89,31 @@ def update_timer():
         countdown -= 1
     else:
         game_over()
-
+ 
 def on_mouse_down(pos):
-    index = 1
+    global countdown
     
+    index = 1
     for answer_box in answer_boxes:
         if answer_box.collidepoint(pos):
             if index == int(question[5]):
                 print("correct answer")
                 handle_correct_answer()
             else:
-                # game_over()
+                game_over()
                 print("game over")
-
         index += 1
+
+    if skip_box.collidepoint(pos):
+        get_one_question()
+        countdown = 15
 
 def handle_correct_answer():
     global question
     global countdown
-
     question = get_one_question()
     print(question)
     countdown = 15
-
-
 
 question = get_one_question()
 clock.schedule_interval(update_timer, 1)
