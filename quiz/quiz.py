@@ -11,6 +11,8 @@ timer_box = Rect(450,70,125,100)
 skip_box = Rect(450,200,125,230)
 countdown = 15
 answer_boxes = []
+score = 0
+game_finished = False
 
 x0 = 0 # for even numbered boxes
 y0 = 200
@@ -45,9 +47,8 @@ def get_one_question():
     global questions
     global question
     
-    if len(questions) > 0: # if questions list if not empty
+    if questions: # if questions list if not empty
         question = questions.pop(0).split(",")
-    
     return question
 
 def draw():
@@ -87,8 +88,11 @@ def update_timer():
 
     if countdown > 0:
         countdown -= 1
+    elif game_finished:
+        countdown = 0
     else:
         game_over()
+    
  
 def on_mouse_down(pos):
     global countdown
@@ -97,27 +101,39 @@ def on_mouse_down(pos):
     for answer_box in answer_boxes:
         if answer_box.collidepoint(pos):
             if index == int(question[5]):
-                print("correct answer")
                 handle_correct_answer()
             else:
                 game_over()
-                print("game over")
         index += 1
 
     if skip_box.collidepoint(pos):
         get_one_question()
         countdown = 15
 
+def congrats_screen():
+    global question
+    global countdown
+    question = ["Congratulations! You got " + str(score) + "/10!","-","-","-","-","0"]
+    countdown = 0
+
 def handle_correct_answer():
     global question
     global countdown
-    question = get_one_question()
-    print(question)
+    global score
+    global game_finished
+    
+    if questions:
+        question = get_one_question()
+    print(questions)
+
     countdown = 15
+    score += 1
+
+    if not questions:
+        game_finished = True
+        congrats_screen()
 
 question = get_one_question()
 clock.schedule_interval(update_timer, 1)
-
-print(question)
 
 pgzrun.go()
