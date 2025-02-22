@@ -13,6 +13,7 @@ countdown = 15
 answer_boxes = []
 score = 0
 game_finished = False
+question_number = 1
 
 x0 = 0 # for even numbered boxes
 y0 = 200
@@ -81,7 +82,7 @@ def game_over():
     global question
     global countdown
     countdown = 0
-    question = ["Game Over","-","-","-","-","0"]
+    question = ["Game Over, You got " + str(score) + "/10!","-","-","-","-","0"]
 
 def update_timer():
     global countdown
@@ -121,6 +122,7 @@ def handle_correct_answer():
     global countdown
     global score
     global game_finished
+    global question_number
     
     if questions:
         question = get_one_question()
@@ -128,8 +130,9 @@ def handle_correct_answer():
 
     countdown = 15
     score += 1
+    question_number += 1
 
-    if not questions:
+    if question_number == 11:
         game_finished = True
         congrats_screen()
 
